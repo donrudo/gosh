@@ -1,3 +1,4 @@
+rm plugins/*
 pushd cmd > /dev/null
 
 echo ""
