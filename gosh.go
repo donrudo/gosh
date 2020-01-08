@@ -50,7 +50,7 @@ func (gosh *Goshell) loadCommands() error {
 		return err
 	}
 
-	plugins, err := listFiles(gosh.pluginsDir, `.*_command.so`)
+	plugins, err := listFiles(gosh.pluginsDir, `.*_cmd.so`)
 	if err != nil {
 		return err
 	}
