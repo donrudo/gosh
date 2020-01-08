@@ -9,4 +9,4 @@ for f in *; {
 
 echo ""
 popd > /dev/null
-go build 
+go build
