@@ -6,22 +6,11 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
+	"time"
 
 	"github.com/Merith-TK/gosh/api"
 )
-
-type pwdCmd string
-
-func (t pwdCmd) Name() string      { return string(t) }
-func (t pwdCmd) Usage() string     { return `pwd` }
-func (t pwdCmd) ShortDesc() string { return `finds working directory"` }
-func (t pwdCmd) LongDesc() string  { return t.ShortDesc() }
-func (t pwdCmd) Exec(ctx context.Context, args []string) (context.Context, error) {
-	//out := ctx.Value("gosh.stdout").(io.Writer)
-	//fmt.Fprintln(out, customPWD())
-	customPWD()
-	return ctx, nil
-}
 
 type editCmd string
 
@@ -30,9 +19,8 @@ func (t editCmd) Usage() string     { return `edit` }
 func (t editCmd) ShortDesc() string { return `opens nano` }
 func (t editCmd) LongDesc() string  { return t.ShortDesc() }
 func (t editCmd) Exec(ctx context.Context, args []string) (context.Context, error) {
-	//out := ctx.Value("gosh.stdout").(io.Writer)
-	//fmt.Fprintln(out, customPWD())
-	customEdit()
+	cmdArgs := strings.Join(args[1:], " ")
+	customEdit(cmdArgs)
 	return ctx, nil
 }
 
@@ -47,7 +35,6 @@ func (t *customCmds) Init(ctx context.Context) error {
 
 func (t *customCmds) Registry() map[string]api.Command {
 	return map[string]api.Command{
-		"pwd":  pwdCmd("pwd"),
 		"edit": editCmd("edit"),
 	}
 }
@@ -55,17 +42,15 @@ func (t *customCmds) Registry() map[string]api.Command {
 // Commands just custom
 var Commands customCmds
 
-func customPWD() {
-	var mydir string
-	mydir, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(mydir)
-}
+func customEdit(cmdArgs string) {
 
-func customEdit() {
-	cmd := exec.Command("nano")
+	editor := os.Getenv("EDITOR")
+	if editor == "" {
+		fmt.Println("ERROR: `$EDITOR` variable not set, defaulting to `vi`")
+		time.Sleep(time.Duration(2) * time.Second)
+		editor = "vi"
+	}
+	cmd := exec.Command(editor, cmdArgs)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
