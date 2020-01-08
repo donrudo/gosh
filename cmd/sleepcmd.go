@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/vladimirvivien/gosh/api"
+	"github.com/Merith-TK/gosh/api"
 	"io"
 	"strconv"
 	"time"

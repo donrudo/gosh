@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/vladimirvivien/gosh/api"
+	"github.com/Merith-TK/gosh/api"
 )
 
 // helpCmd represents the `help` command
