@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/Merith-TK/gosh/api"
 )
@@ -25,18 +26,32 @@ func (t clearCmd) Exec(ctx context.Context, args []string) (context.Context, err
 	return ctx, nil
 }
 
-type testCmds struct{}
+type echoCmd string
 
-func (t *testCmds) Init(ctx context.Context) error {
+func (t echoCmd) Name() string      { return string(t) }
+func (t echoCmd) Usage() string     { return `echo` }
+func (t echoCmd) ShortDesc() string { return `prints args` }
+func (t echoCmd) LongDesc() string  { return t.ShortDesc() }
+func (t echoCmd) Exec(ctx context.Context, args []string) (context.Context, error) {
+
+	cmdArgs := strings.Join(args[1:], " ")
+	fmt.Println(cmdArgs)
+	return ctx, nil
+}
+
+type termCmds struct{}
+
+func (t *termCmds) Init(ctx context.Context) error {
 	out := ctx.Value("gosh.stdout").(io.Writer)
-	fmt.Fprintln(out, "test module loaded OK")
+	fmt.Fprintln(out, "term module loaded OK")
 	return nil
 }
 
-func (t *testCmds) Registry() map[string]api.Command {
+func (t *termCmds) Registry() map[string]api.Command {
 	return map[string]api.Command{
 		"clear": clearCmd("clear"),
+		"echo":  echoCmd("echo"),
 	}
 }
 
-var Commands testCmds
+var Commands termCmds

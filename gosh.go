@@ -196,7 +196,7 @@ func main() {
 
 	shell := New()
 	if err := shell.Init(ctx); err != nil {
-		fmt.Print("\n\nfailed to initialize:", err)
+		fmt.Println("\n\nfailed to initialize:\n", err)
 		os.Exit(1)
 	}
 

@@ -31,10 +31,13 @@ func (t dirCmd) ShortDesc() string { return `lists files in dir` }
 func (t dirCmd) LongDesc() string  { return t.ShortDesc() }
 func (t dirCmd) Exec(ctx context.Context, args []string) (context.Context, error) {
 
-	//	cmdArgs := strings.Join(args[1:], " ")
-	files, err := ioutil.ReadDir(".")
+	cmdArgs := strings.Join(args[1:], " ")
+	if cmdArgs == "" {
+		cmdArgs = "."
+	}
+	files, err := ioutil.ReadDir(cmdArgs)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	for _, f := range files {
 		fmt.Println(f.Name())
@@ -51,7 +54,11 @@ func (t cdCmd) LongDesc() string  { return t.ShortDesc() }
 func (t cdCmd) Exec(ctx context.Context, args []string) (context.Context, error) {
 	cmdArgs := strings.Join(args[1:], " ")
 	os.Chdir(cmdArgs)
-	return ctx, nil
+	pwd, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+	}
+	return context.WithValue(ctx, "gosh.prompt", "gosh "+pwd+" >"), nil
 }
 
 // command module

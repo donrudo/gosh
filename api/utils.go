@@ -3,11 +3,11 @@ package api
 import (
 	"context"
 	"io"
+	"log"
 	"os"
 )
 
 const (
-	PluginsDir    = "./plugins"
 	CmdSymbolName = "Commands"
 	DefaultPrompt = "gosh>"
 )
@@ -36,4 +36,15 @@ func GetPrompt(ctx context.Context) string {
 		}
 	}
 	return prompt
+}
+
+var PluginsDir = plugins()
+
+func plugins() string {
+	goshPlugins, err := os.UserHomeDir()
+	if err != nil {
+		log.Panic(err)
+	}
+	goshPlugins = goshPlugins + "/.gosh/plugins/"
+	return goshPlugins
 }
