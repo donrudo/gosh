@@ -72,7 +72,6 @@ func (t *dirCmds) Init(ctx context.Context) error {
 
 func (t *dirCmds) Registry() map[string]api.Command {
 	return map[string]api.Command{
-		"ls":  dirCmd("ls"),
 		"dir": dirCmd("dir"),
 		"pwd": pwdCmd("pwd"),
 		"cd":  cdCmd("cd"),

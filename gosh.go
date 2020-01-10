@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path"
 	"plugin"
@@ -41,7 +42,6 @@ func New() *Goshell {
 // Init initializes the shell with the given context
 func (gosh *Goshell) Init(ctx context.Context) error {
 	gosh.ctx = ctx
-	gosh.printSplash()
 	return gosh.loadCommands()
 }
 
@@ -83,11 +83,6 @@ func (gosh *Goshell) loadCommands() error {
 		gosh.ctx = context.WithValue(gosh.ctx, "gosh.commands", gosh.commands)
 	}
 	return nil
-}
-
-// TODO delegate splash to a plugin
-func (gosh *Goshell) printSplash() {
-	fmt.Println(`-------------------------`)
 }
 
 // Open opens the shell for the given reader
@@ -143,7 +138,12 @@ func (gosh *Goshell) handle(ctx context.Context, cmdLine string) (context.Contex
 		cmdName := args[0]
 		cmd, ok := gosh.commands[cmdName]
 		if !ok {
-			return ctx, errors.New(fmt.Sprintf("command not found: %s", cmdName))
+			err := externalExec(ctx, cmdName, args)
+			if err != nil {
+				return ctx, errors.New(fmt.Sprintf("command not found: %s", cmdName))
+			}
+			//return ctx, errors.New(fmt.Sprintf("command not found: %s", cmdName))
+			return ctx, nil
 		}
 		return cmd.Exec(ctx, args)
 	}
@@ -209,4 +209,18 @@ func main() {
 		<-shell.Closed()
 	case <-shell.Closed():
 	}
+}
+
+func externalExec(ctx context.Context, command string, arg []string) error {
+	cmd := exec.Command(command)
+	cmd.Args = arg
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Sprintf("command not found: %s", command)
+		return errors.New(fmt.Sprintf("error using: %s", command))
+	}
+	return nil
 }

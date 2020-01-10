@@ -1,3 +1,24 @@
+# Go Fish, The Go friendly interactive shell
+This shell is built upon the GOSH shell, edits have had to been made to `gosh.go`
+so that it would function properly, 
+
+## wants and wishes
+I want to make this a fully viable shell for all linux users, current list of features that are currently included
+### What works
+ * Clear command,
+ * sleep command, 
+ * Configurable splash screen,
+ * (Atto Editor)[https://github.com/jonpalmisc/atto],
+ * `cd`, `ls`, `echo`
+ * A working `exit` command
+ * The ability to call external commands from `$PATH`, 
+### What doesnt work
+ * every other creature comfort
+ * rc file
+ * easy configuration
+ * not listening to `ctrl+c`, seriously you close a single program with ctrl+c and the thing just closes the entire shell
+
+
 # Gosh - A pluggable interactive shell written Go
 
 `Gosh` (or Go shell) is a framework that uses Go's plugin system to create
