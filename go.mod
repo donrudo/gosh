@@ -1,4 +1,4 @@
-module github.com/Merith-TK/gosh
+module github.com/donrudo/gosh
 
 go 1.13
 
