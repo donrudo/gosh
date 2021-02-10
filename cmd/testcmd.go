@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/vladimirvivien/gosh/api"
+	"github.com/Merith-TK/gosh/api"
 )
 
 type helloCmd string

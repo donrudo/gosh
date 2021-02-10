@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path"
 	"plugin"
@@ -15,7 +16,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/vladimirvivien/gosh/api"
+	"github.com/Merith-TK/gosh/api"
 )
 
 var (
@@ -49,7 +50,7 @@ func (gosh *Goshell) loadCommands() error {
 		return err
 	}
 
-	plugins, err := listFiles(gosh.pluginsDir, `.*_command.so`)
+	plugins, err := listFiles(gosh.pluginsDir, `.*cmd.so`)
 	if err != nil {
 		return err
 	}
@@ -137,7 +138,12 @@ func (gosh *Goshell) handle(ctx context.Context, cmdLine string) (context.Contex
 		cmdName := args[0]
 		cmd, ok := gosh.commands[cmdName]
 		if !ok {
-			return ctx, errors.New(fmt.Sprintf("command not found: %s", cmdName))
+			err := externalExec(ctx, cmdName, args)
+			if err != nil {
+				return ctx, errors.New(fmt.Sprintf("command not found: %s", cmdName))
+			}
+			//return ctx, errors.New(fmt.Sprintf("command not found: %s", cmdName))
+			return ctx, nil
 		}
 		return cmd.Exec(ctx, args)
 	}
@@ -203,4 +209,18 @@ func main() {
 		<-shell.Closed()
 	case <-shell.Closed():
 	}
+}
+
+func externalExec(ctx context.Context, command string, arg []string) error {
+	cmd := exec.Command(command)
+	cmd.Args = arg
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		fmt.Sprintf("command not found: %s", command)
+		return errors.New(fmt.Sprintf("error using: %s", command))
+	}
+	return nil
 }
