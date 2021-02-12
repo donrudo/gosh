@@ -1,5 +1,6 @@
 DIR_CONF=${HOME}/.gosh
 DIR_PLUGIN=${HOME}/.gosh/plugins
+GOPATH := $(shell go env GOPATH)
 DIR_PKG=pkg
 
 APP=gosh
