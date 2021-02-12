@@ -41,10 +41,16 @@ func GetPrompt(ctx context.Context) string {
 var PluginsDir = plugins()
 
 func plugins() string {
-	goshPlugins, err := os.UserHomeDir()
-	if err != nil {
-		log.Panic(err)
+
+	goshPlugins := os.Getenv("GOSH_PLUGINS")
+
+	if goshPlugins == "" {
+		goshPlugins, err := os.UserHomeDir()
+		if err != nil {
+			log.Panic(err)
+		}
+		goshPlugins = goshPlugins + "/.gosh/plugins/"
 	}
-	goshPlugins = goshPlugins + "/.gosh/plugins/"
+
 	return goshPlugins
 }
