@@ -136,7 +136,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/vladimirvivien/gosh/api"
+	"github.com/donrudo/gosh/api"
 )
 
 type helloCmd string
