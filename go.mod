@@ -1,6 +1,6 @@
 module github.com/donrudo/gosh
 
-go 1.13
+go 1.17
 
 require (
 	github.com/mattn/go-runewidth v0.0.7 // indirect
