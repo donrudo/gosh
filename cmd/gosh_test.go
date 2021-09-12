@@ -14,7 +14,7 @@ var (
 
 func TestShellNew(t *testing.T) {
 	shell := New()
-	if shell.pluginsDir != testPluginsDir {
+	if shell.pluginsDir != "" {
 		t.Error("pluginsDir not set")
 	}
 }
