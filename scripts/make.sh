@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-pushd plugins > /dev/null
-
-echo ""
+pushd plugins > /dev/null || exit
 
 for f in *; {
-    go build -buildmode=plugin  -o ../pkg/plugins/$f.cmd.so $f
-    echo "BUILD: $f.cmd.so";}
+  go build -buildmode=plugin  -o "../${DIR_PKG_PLUGIN}/${f}.cmd.so" "${f}"
+  echo "BUILD: $f.cmd.so";
+}
 
-echo ""
-popd > /dev/null
+popd > /dev/null || exit
 
