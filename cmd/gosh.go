@@ -42,14 +42,25 @@ func New() *Goshell {
 // Init initializes the shell with the given context
 func (gosh *Goshell) Init(ctx context.Context) error {
 	gosh.ctx = ctx
+
+	// load settings from Environment variables
+	// TODO: future enhancement is to load settings from a configuration file
+	if pluginsDir := os.Getenv("GOSH_PLUGINS_DIR"); pluginsDir != "" {
+		gosh.pluginsDir = pluginsDir
+	}
+
 	return gosh.loadCommands()
 }
 
 func (gosh *Goshell) loadCommands() error {
+
+	// check if the plugins directory exists
 	if _, err := os.Stat(gosh.pluginsDir); err != nil {
+		println(gosh.pluginsDir)
 		return err
 	}
 
+	// list all files in the plugins directory
 	plugins, err := listFiles(gosh.pluginsDir, `.*cmd.so`)
 	if err != nil {
 		return err
