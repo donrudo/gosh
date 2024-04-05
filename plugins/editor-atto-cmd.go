@@ -57,7 +57,7 @@ var Commands attoCmds
 // program not exiting properly for gosh
 // ----------------------------------------------
 
-//##main.go
+// ##main.go
 func attoEditCmd(args string) {
 	if len(args) < 1 {
 		fmt.Println("Usage: atto <file>")
@@ -70,7 +70,7 @@ func attoEditCmd(args string) {
 	editor.Run()
 }
 
-//##buffer.go
+// ##buffer.go
 // BufferLine represents a single line in a buffer.
 type BufferLine struct {
 	Editor       *Editor
@@ -161,7 +161,7 @@ func (l *BufferLine) IndentLength() (indent int) {
 	return indent
 }
 
-//##config.go
+// ##config.go
 // Config holds the editor's configuration and settings.
 type Config struct {
 	TabSize         int
@@ -254,7 +254,7 @@ func LoadConfig() (Config, error) {
 	return config, nil
 }
 
-//##editor.go
+// ##editor.go
 // Editor is the editor instance and manages the UI.
 type Editor struct {
 
@@ -718,7 +718,7 @@ func (e *Editor) SetStatusMessage(format string, args ...interface{}) {
 	e.StatusMessageTime = time.Now()
 }
 
-//##highlighter.go
+// ##highlighter.go
 type HighlightType int
 
 const (
@@ -832,7 +832,7 @@ func HighlightLine(l *BufferLine, s *Syntax) {
 	}
 }
 
-//##support.go
+// ##support.go
 const (
 	ProgramName    string = "Atto"
 	ProgramVersion string = "0.2.3"
@@ -897,7 +897,7 @@ func GuessFileType(name string) FileType {
 	return FileTypeUnknown
 }
 
-//##syntax.go
+// ##syntax.go
 // SyntaxPatterns is used to define syntax patterns for the highlighter.
 type SyntaxPatterns struct {
 	SingleLineCommentStart string
