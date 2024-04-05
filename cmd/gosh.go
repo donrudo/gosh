@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -162,7 +161,7 @@ func (gosh *Goshell) handle(ctx context.Context, cmdLine string) (context.Contex
 }
 
 func listFiles(dir, pattern string) ([]os.FileInfo, error) {
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +176,7 @@ func listFiles(dir, pattern string) ([]os.FileInfo, error) {
 			return nil, err
 		}
 		if matched {
-			filteredFiles = append(filteredFiles, file)
+			filteredFiles = append(filteredFiles)
 		}
 	}
 	return filteredFiles, nil
