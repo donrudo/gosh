@@ -7,5 +7,4 @@ require (
 	github.com/nsf/termbox-go v1.1.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-
 )
